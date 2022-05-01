@@ -10,6 +10,7 @@
     const colors = document.getElementsByClassName("jsColor");
     const range = document.getElementById("jsRange");
     const mode = document.getElementById("jsMode");
+    const saveBtn = document.getElementById("jsSave");
 
     const INITIAL_COLOR = "#2c2c2c";
     const CANVAS_SIZE = 700;
@@ -18,6 +19,9 @@
     canvas.height = CANVAS_SIZE;
 
     // strokeStyle -> 색상이나 스타일을 라인에서 사용
+    // default에 의해서 하얀 배경이 된다.
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     ctx.strokeStyle = INITIAL_COLOR;
     ctx.fillStyle = INITIAL_COLOR;
     ctx.lineWidth = 2.5;
@@ -94,6 +98,21 @@
         }
     }
 
+    // 우클릭했을 때 아무것도 안뜸. 밑에 save를 통해 저장하게끔 하려고
+    function handleCM(event){
+        event.preventDefault();
+    }
+
+    // download는 anchor("a")태그의 attribute
+    function handleSaveClick(){
+        const image = canvas.toDataURL();
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = "download success!";
+        link.click();
+        
+    }
+
     // canvas 존재와 움직임확인?
     // 캔버스를 클릭하는 순간 인지 / 클릭했을 때 painting을 시작 -> event로 처리
     // mousedown 클릭했을 때 발생하는 event
@@ -106,6 +125,7 @@
         canvas.addEventListener("mouseup", stopPainting);
         canvas.addEventListener("mouseleave",stopPainting);
         canvas.addEventListener("click", handleCanvasClick);
+        canvas.addEventListener("contextmenu", handleCM);
     }
 
     // array.from()는 object로부터 array를 만듬
@@ -123,6 +143,9 @@
         mode.addEventListener("click", handleModeClick)
     }
 
+    if(saveBtn){
+        saveBtn.addEventListener("click", handleSaveClick);
+    }
 
 
     // Context 요소 안에서 픽셀에 접근하는 방법
