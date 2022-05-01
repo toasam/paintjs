@@ -11,12 +11,19 @@
     const range = document.getElementById("jsRange");
     const mode = document.getElementById("jsMode");
 
-    canvas.width = 700;
-    canvas.height = 700;
+    const INITIAL_COLOR = "#2c2c2c";
+    const CANVAS_SIZE = 700;
+
+    canvas.width = CANVAS_SIZE;
+    canvas.height = CANVAS_SIZE;
 
     // strokeStyle -> 색상이나 스타일을 라인에서 사용
-    ctx.strokeStyle = "#2c2c2c";
+    ctx.strokeStyle = INITIAL_COLOR;
+    ctx.fillStyle = INITIAL_COLOR;
     ctx.lineWidth = 2.5;
+    
+    //ctx.fillStyle = "green";
+    //ctx.fillRect(50, 20, 100, 49);
 
     let painting = false;
     let filling = false;
@@ -63,6 +70,7 @@
     function handleColorClick(event){
         const color = event.target.style.backgroundColor;
         ctx.strokeStyle = color;
+        ctx.fillStyle = color;
     }
 
     function handleRangeChange(event){
@@ -77,7 +85,12 @@
         } else{
             filling = true;
             mode.innerText = "Paint"
+        }
+    }
 
+    function handleCanvasClick(){
+        if(filling){
+            ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
         }
     }
 
@@ -92,6 +105,7 @@
     // onMouseUp을 stopPainting 안 바꾼 이유 : 나중에 실제로 그리는 line이 필요
         canvas.addEventListener("mouseup", stopPainting);
         canvas.addEventListener("mouseleave",stopPainting);
+        canvas.addEventListener("click", handleCanvasClick);
     }
 
     // array.from()는 object로부터 array를 만듬
