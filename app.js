@@ -8,6 +8,8 @@
     const canvas = document.getElementById("jsCanvas");
     const ctx = canvas.getContext("2d");
     const colors = document.getElementsByClassName("jsColor");
+    const range = document.getElementById("jsRange");
+    const mode = document.getElementById("jsMode");
 
     canvas.width = 700;
     canvas.height = 700;
@@ -17,6 +19,7 @@
     ctx.lineWidth = 2.5;
 
     let painting = false;
+    let filling = false;
 
     function stopPainting(){
         painting = false;
@@ -62,6 +65,22 @@
         ctx.strokeStyle = color;
     }
 
+    function handleRangeChange(event){
+        const size = event.target.value;
+        ctx.lineWidth = size;
+    }
+
+    function handleModeClick(){
+        if(filling === true){
+            filling = false;
+            mode.innerText = "Fill"
+        } else{
+            filling = true;
+            mode.innerText = "Paint"
+
+        }
+    }
+
     // canvas 존재와 움직임확인?
     // 캔버스를 클릭하는 순간 인지 / 클릭했을 때 painting을 시작 -> event로 처리
     // mousedown 클릭했을 때 발생하는 event
@@ -81,6 +100,16 @@
     //array 만들고 forEach로 color를 돌려서 addEventListener("click", handleColorClick) 호출
     // 여기 color는 array안에 있는 각각의 아이템들을 대표하는 것임
     Array.from(colors).forEach(color => color.addEventListener("click", handleColorClick))
+
+    if(range){
+        range.addEventListener("input", handleRangeChange)
+    }
+
+    if(mode){
+        mode.addEventListener("click", handleModeClick)
+    }
+
+
 
     // Context 요소 안에서 픽셀에 접근하는 방법
     // 여기서 context는 canvas안에서 픽셀을 다루는 것
