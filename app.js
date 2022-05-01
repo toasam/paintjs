@@ -7,6 +7,7 @@
     // canvas위에 마우스를 두면 그걸 감지하는 코드
     const canvas = document.getElementById("jsCanvas");
     const ctx = canvas.getContext("2d");
+    const colors = document.getElementsByClassName("jsColor");
 
     canvas.width = 700;
     canvas.height = 700;
@@ -42,9 +43,9 @@
     }
 
     //event를 줘야 색상을 볼 수 있음.
-    function onMouseDown(event){
-        painting = true;
-    }
+    //function onMouseDown(event){
+    //    painting = true;
+    //}
 
     function onMouseUp(event){
         stopPainting()
@@ -52,6 +53,13 @@
 
     function onMouseLeave(event){
         painting = false;
+    }
+
+    // ctx.strokeStyle = color; 
+    // strokeStyle을 override하고 여기서부턴 strokeStyle이 target에 있는 색상이 된다.
+    function handleColorClick(event){
+        const color = event.target.style.backgroundColor;
+        ctx.strokeStyle = color;
     }
 
     // canvas 존재와 움직임확인?
@@ -67,6 +75,12 @@
         canvas.addEventListener("mouseleave",stopPainting);
     }
 
+    // array.from()는 object로부터 array를 만듬
+    //console.log(Array.from(colors));
+
+    //array 만들고 forEach로 color를 돌려서 addEventListener("click", handleColorClick) 호출
+    // 여기 color는 array안에 있는 각각의 아이템들을 대표하는 것임
+    Array.from(colors).forEach(color => color.addEventListener("click", handleColorClick))
 
     // Context 요소 안에서 픽셀에 접근하는 방법
     // 여기서 context는 canvas안에서 픽셀을 다루는 것
